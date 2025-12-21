@@ -1,9 +1,9 @@
 import pygame
-from minos import *
-from utils import *
+from tet_utils.minos import *
 
 class Board:
-    def __init__(self, w, h):
+    def __init__(self, unit, w, h):
+        self.unit = unit
         self.w = w
         self.h = h
         self.grid = [[" "]*w for _ in range(h)]
@@ -11,7 +11,7 @@ class Board:
     def draw(self, screen, pos):
         for y in range(self.h):
             for x in range(self.w):
-                rect = (x*UNIT+pos[0], y*UNIT+pos[1], UNIT, UNIT)
+                rect = (x*self.unit+pos[0], y*self.unit+pos[1], self.unit, self.unit)
                 if self.grid[y][x] == " ":
                     if y >= self.h//2:
                         pygame.draw.rect(screen, MINO_COLORS["X"], rect, 1)

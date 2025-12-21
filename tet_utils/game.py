@@ -1,13 +1,25 @@
 import pygame
 import time
-from board import Board
-from handler import Handler
-from rng import RNG
-from minos import *
-from utils import *
+from tet_utils.board import Board
+from tet_utils.handler import Handler
+from tet_utils.rng import RNG
+from tet_utils.minos import *
+
+ATTACK_TABLE = {
+    0: 0,
+    1: 0,
+    2: 1,
+    3: 2,
+    4: 4
+}
 
 class Game:
-    def __init__(self, seed=None):
+    def __init__(self, handling, screen_w, screen_h, unit, seed=None):
+        self.handling = handling
+        self.screen_w = screen_w
+        self.screen_h = screen_h
+        self.unit = unit
+
         self.seed = round(time.time()*10000)
         if seed:
             self.seed = seed
@@ -21,7 +33,7 @@ class Game:
         self.board = Board(10, 40)
         self.queue = []
         self.next()
-        self.handler = Handler(DAS, ARR, SDF)
+        self.handler = Handler(self.handling["das"], self.handling["arr"], self.handling["sdf"])
         self.hold_type = None
         self.held = False
         self.attack = 0
@@ -34,7 +46,7 @@ class Game:
         for y, row in enumerate(MINO_SHAPES[mt][str(mr)]):
             for x, dot in enumerate(row):
                 if dot:
-                    rect = ((mx+x)*UNIT+pos[0], (my+y)*UNIT+pos[1], UNIT, UNIT)
+                    rect = ((mx+x)*self.unit+pos[0], (my+y)*self.unit+pos[1], self.unit, self.unit)
                     pygame.draw.rect(screen, color, rect)
     
     def next(self):
@@ -122,8 +134,9 @@ class Game:
         self.draw_mino(screen, pos, self.mino.x, shadow_mino.y, self.mino.type, self.mino.rotation, MINO_COLORS["X"])
 
     def draw(self, screen, offset=(0, 0)):
-        pos = (SCREEN_W/2-UNIT*10/2+offset[0], SCREEN_H/2-UNIT*20/2+offset[1])
-        pos_margin = (pos[0], pos[1]-self.board.h//2*UNIT)
+        pos = (self.screen_w/2-self.unit*10/2+offset[0], self.screen_h/2-self.unit*20/2+offset[1])
+        pos_margin = (pos[0], pos[1]-self.board.h//2*self.unit)
+        
         self.board.draw(screen, pos_margin)
         self.draw_shadow(screen, pos_margin)
         self.draw_mino(screen, pos_margin, self.mino.x, self.mino.y, self.mino.type, self.mino.rotation)

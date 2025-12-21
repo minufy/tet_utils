@@ -1,0 +1,10 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "tet_utils"
+requires-python = ">=3.8"
+
+[tool.setuptools.packages.find]
+where = ["."]
