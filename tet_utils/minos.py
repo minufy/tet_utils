@@ -204,7 +204,7 @@ class Mino:
         self.y = y
         self.rotation = rotation
 
-    def check_collison(self, board):
+    def check_collision(self, board):
         for y, row in enumerate(MINO_SHAPES[self.type][str(self.rotation)]):
             for x, dot in enumerate(row):
                 if dot:
@@ -230,7 +230,7 @@ class Mino:
             self.rotation -= 4
         if self.rotation < 0:
             self.rotation += 4
-        if self.check_collison(board):
+        if self.check_collision(board):
             key = f"{old_rotation}{self.rotation}"
             offsets = JLTSZ_OFFSETS[key]
             if self.type == "I":
@@ -241,7 +241,7 @@ class Mino:
     def move(self, x, y, board):
         self.x += x
         self.y += y
-        if self.check_collison(board):
+        if self.check_collision(board):
             self.x -= x
             self.y -= y
             return False
