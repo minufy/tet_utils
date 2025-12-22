@@ -31,7 +31,7 @@ class Game:
         self.queue = []
         self.next()
         self.handler = Handler(self.handling["das"], self.handling["arr"], self.handling["sdf"])
-        self.hold_type = None
+        self.hold_type = ""
         self.held = False
         self.attack = 0
 
@@ -111,7 +111,7 @@ class Game:
         if self.held:
             return
         old_type = self.mino.type
-        if self.hold_type == None:
+        if self.hold_type == "":
             self.next()
         else:
             self.mino = Mino(self.hold_type, 3, self.board.h//2-4)
@@ -137,7 +137,7 @@ class Game:
         self.board.draw(screen, unit, pos_margin)
         self.draw_shadow(screen, unit, pos_margin)
         self.draw_mino(screen, unit, pos_margin, self.mino.x, self.mino.y, self.mino.type, self.mino.rotation)
-        if self.hold_type:
+        if self.hold_type != "":
             color = MINO_COLORS[self.hold_type]
             if self.held:
                 color = MINO_COLORS["H"]
