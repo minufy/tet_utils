@@ -70,6 +70,11 @@ class Game:
                 x = -0.5
             self.draw_mino(screen, unit, pos, 11+x, y+1+i*gap, mino_type, 0, MINO_COLORS[mino_type])
 
+    def soft_drop(self):
+        for _ in range(self.board.h):
+            if self.mino.move(0, 1, self.board) == False:
+                break
+
     def hard_drop(self):
         self.held = False
         for _ in range(self.board.h):
@@ -87,6 +92,7 @@ class Game:
                 
                 self.next()
                 break
+            
         take_garbage = -min(self.garbage, 0)
         self.board.add_garbage(take_garbage, round(self.rng.nextFloat()))
         self.garbage += take_garbage
@@ -100,6 +106,10 @@ class Game:
             self.mino.move(-1, 0, self.board)
         if key == "softdrop":
             self.handler.down_soft_drop()
+            if self.handler.sdf == 0:
+                self.soft_drop()
+            else:
+                self.mino.move(0, 1, self.board)
         if key == "cw":
             self.mino.rotate(1, self.board)
         if key == "ccw":
