@@ -13,6 +13,13 @@ ATTACK_TABLE = {
     4: 4
 }
 
+TSPIN_ATTACK_TABLE = {
+    0: 0,
+    1: 1,
+    2: 4,
+    3: 6
+}
+
 class Game:
     def __init__(self, handling, seed=None):
         self.handling = handling
@@ -67,9 +74,13 @@ class Game:
         self.held = False
         for _ in range(self.board.h):
             if self.mino.move(0, 1, self.board) == False:
+                test_mino = Mino(self.mino.type, self.mino.x, self.mino.y, self.mino.rotation)
+                tspin = self.mino.type == "T" and test_mino.move(0, -1, self.board) == False
                 self.board.place(self.mino)
                 
                 attack = ATTACK_TABLE[self.board.line_clear()]
+                if tspin:
+                    attack = TSPIN_ATTACK_TABLE[self.board.line_clear()]
                 self.garbage += attack
                 self.attack += attack
                 
