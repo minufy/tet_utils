@@ -15,15 +15,23 @@ class Handler:
         self.soft_drop_held = False
         self.soft_drop_sdf_timer = 0
 
+        self.charge = None
+
     def down_right(self):
         self.held.append("right")
         self.right_hold_ms = 0
         self.right_arr_timer = 0
 
+    def charge_right(self):
+        self.charge = "right"
+
     def down_left(self):
         self.held.append("left")
         self.left_hold_ms = 0
         self.left_arr_timer = 0
+
+    def charge_left(self):
+        self.charge = "left"
 
     def down_soft_drop(self):
         self.soft_drop_held = True
@@ -55,7 +63,7 @@ class Handler:
         if self.held == []:
             return movement_queue
 
-        if self.held[-1] == "right":
+        if self.held[-1] == "right" or self.charge == "right":
             self.right_hold_ms += dt
             if self.right_hold_ms >= self.das:
                 self.right_arr_timer += dt
@@ -65,8 +73,9 @@ class Handler:
                         movement_queue.append((1, 0))
                     else:
                         break
+                self.charge = None
                     
-        if self.held[-1] == "left":
+        if self.held[-1] == "left" or self.charge == "left":
             self.left_hold_ms += dt
             if self.left_hold_ms >= self.das:
                 self.left_arr_timer += dt
@@ -76,5 +85,6 @@ class Handler:
                         movement_queue.append((-1, 0))
                     else:
                         break
+                self.charge = None
 
         return movement_queue

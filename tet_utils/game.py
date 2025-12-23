@@ -104,6 +104,12 @@ class Game:
         if key == "left":
             self.handler.down_left()
             self.mino.move(-1, 0, self.board)
+        if key == "chargeright":
+            self.handler.charge_right()
+            self.mino.move(1, 0, self.board)
+        if key == "chargeleft":
+            self.handler.charge_left()
+            self.mino.move(-1, 0, self.board)
         if key == "softdrop":
             self.handler.down_soft_drop()
             if self.handler.sdf == 0:
