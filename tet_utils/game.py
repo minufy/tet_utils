@@ -78,9 +78,10 @@ class Game:
                 tspin = self.mino.type == "T" and test_mino.move(0, -1, self.board) == False
                 self.board.place(self.mino)
                 
-                attack = ATTACK_TABLE[self.board.line_clear()]
+                cleared_lines = self.board.line_clear()
+                attack = ATTACK_TABLE[cleared_lines]
                 if tspin:
-                    attack = TSPIN_ATTACK_TABLE[self.board.line_clear()]
+                    attack = TSPIN_ATTACK_TABLE[cleared_lines]
                 self.garbage += attack
                 self.attack += attack
                 
