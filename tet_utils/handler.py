@@ -60,27 +60,24 @@ class Handler:
                 else:
                     break
 
-        if self.held == []:
-            return movement_queue
-
-        if self.held[-1] == "right" or self.charge == "right":
+        if self.held and self.held[-1] == "right" or self.charge == "right":
             self.right_hold_ms += dt
             if self.right_hold_ms >= self.das:
                 self.right_arr_timer += dt
                 for _ in range(board.w):
-                    if self.right_arr_timer >= self.arr:
+                    if self.right_arr_timer >= self.arr or self.charge:
                         self.right_arr_timer -= self.arr
                         movement_queue.append((1, 0))
                     else:
                         break
                 self.charge = None
                     
-        if self.held[-1] == "left" or self.charge == "left":
+        if self.held and self.held[-1] == "left" or self.charge == "left":
             self.left_hold_ms += dt
             if self.left_hold_ms >= self.das:
                 self.left_arr_timer += dt
                 for _ in range(board.w):
-                    if self.left_arr_timer >= self.arr:
+                    if self.left_arr_timer >= self.arr or self.charge:
                         self.left_arr_timer -= self.arr
                         movement_queue.append((-1, 0))
                     else:
