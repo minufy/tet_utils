@@ -94,7 +94,7 @@ class Game:
                 break
             
         take_garbage = -min(self.garbage, 0)
-        self.board.add_garbage(take_garbage, round(self.rng.nextFloat()))
+        self.board.add_garbage(take_garbage, round(self.rng.nextFloat()*(self.board.w-1)))
         self.garbage += take_garbage
 
     def keydown(self, key):
