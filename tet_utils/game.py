@@ -55,7 +55,7 @@ class Game:
     
     def next(self):
         if len(self.queue) <= 5:
-            self.queue += self.rng.shuffleArray(MINO_TYPES.copy())
+            self.fill_queue()
         self.mino = self.pop_queue()
 
     def draw_next(self, screen, unit, pos):
@@ -142,7 +142,7 @@ class Game:
         if self.hold_type == "":
             self.next()
         else:
-            self.mino = Mino(self.hold_type, 3, self.board.h//2-4)
+            self.mino = Mino(self.hold_type, self.board.w//2-4, self.board.h//2-4)
         self.hold_type = old_type
         self.held = True
 
@@ -176,7 +176,7 @@ class Game:
         self.queue += self.rng.shuffleArray(MINO_TYPES.copy())
 
     def pop_queue(self):
-        return Mino(self.queue.pop(0), 3, self.board.h//2-4)
+        return Mino(self.queue.pop(0), self.board.w//2-4, self.board.h//2-4)
 
     def get_garbage(self):
         garbage = max(0, self.garbage)
