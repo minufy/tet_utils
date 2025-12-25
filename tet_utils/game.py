@@ -1,5 +1,6 @@
 import pygame
 import time
+import random
 from tet_utils.board import Board
 from tet_utils.handler import Handler
 from tet_utils.rng import RNG
@@ -54,7 +55,7 @@ class Game:
                     pygame.draw.rect(screen, color, rect)
     
     def next(self):
-        if len(self.queue) <= 5:
+        if len(self.queue) <= 7:
             self.fill_queue()
         self.mino = self.pop_queue()
 
@@ -94,7 +95,8 @@ class Game:
                 break
             
         take_garbage = -min(self.garbage, 0)
-        self.board.add_garbage(take_garbage, round(self.rng.nextFloat()*(self.board.w-1)))
+        if take_garbage:
+            self.board.add_garbage(take_garbage, random.randint(0, self.board.w-1))
         self.garbage += take_garbage
 
     def keydown(self, key):
@@ -142,7 +144,7 @@ class Game:
         if self.hold_type == "":
             self.next()
         else:
-            self.mino = Mino(self.hold_type, self.board.w//2-4, self.board.h//2-4)
+            self.mino = Mino(self.hold_type, self.board.w//2-2, self.board.h//2-4)
         self.hold_type = old_type
         self.held = True
 
@@ -173,10 +175,10 @@ class Game:
         self.draw_next(screen, unit, pos)
 
     def fill_queue(self):
-        self.queue += self.rng.shuffleArray(MINO_TYPES.copy())
+        self.queue += self.rng.shuffleArray(MINO_TYPES.copy()) 
 
     def pop_queue(self):
-        return Mino(self.queue.pop(0), self.board.w//2-4, self.board.h//2-4)
+        return Mino(self.queue.pop(0), self.board.w//2-2, self.board.h//2-4)
 
     def get_garbage(self):
         garbage = max(0, self.garbage)
