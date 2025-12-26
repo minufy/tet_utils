@@ -32,6 +32,7 @@ class Game:
         self.restart()
 
     def restart(self, seed=None):
+        self.seed = round(time.time()*10000)
         if seed:
             self.seed = seed
         self.rng = RNG(self.seed)
